@@ -1,0 +1,1 @@
+Do not forget to create database and migrate all the models. also seed the content. users info is in the Roles and Permission seeder
