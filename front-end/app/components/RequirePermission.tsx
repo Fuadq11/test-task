@@ -11,16 +11,16 @@ export default function RequirePermission({
   permission: string;
   children: React.ReactNode;
 }) {
-  const { hasPermission } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!hasPermission(permission)) {
+    if (user && !user.permissions.includes(permission)) {
       router.replace("/unauthorized");
     }
-  }, [permission]);
+  }, [user, permission, router]);
 
-  if (!hasPermission(permission)) return null;
+  if (!user || !user.permissions.includes(permission)) return null;
 
   return <>{children}</>;
 }

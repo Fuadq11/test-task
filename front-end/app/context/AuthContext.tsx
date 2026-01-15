@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { api } from "../lib/api"
 import { UserType } from "../lib/userType"
@@ -115,9 +115,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const hasRole = (role: string) => user?.roles.includes(role) ?? false
-  const hasPermission = (permission: string) =>
-    user?.permissions.includes(permission) ?? false
+  const hasRole = useCallback(
+    (role: string) => user?.roles.includes(role) ?? false,
+    [user]
+  )
+  
+  const hasPermission = useCallback(
+    (permission: string) => user?.permissions.includes(permission) ?? false,
+    [user]
+  )
 
   return (
     <AuthContext.Provider

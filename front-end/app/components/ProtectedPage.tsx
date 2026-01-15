@@ -10,17 +10,17 @@ interface Props {
 }
 
 export default function ProtectedPage({ children, permission }: Props) {
-  const { user, loading, hasPermission } = useAuth()
+  const { user, loading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login") 
     }
-    if (!loading && user && permission && !hasPermission(permission)) {
+    if (!loading && user && permission && !user.permissions.includes(permission)) {
       router.push("/unauthorized")
     }
-  }, [loading, user, permission, hasPermission, router])
+  }, [loading, user, permission, router])
 
   if (loading) {
     return (
@@ -38,7 +38,7 @@ export default function ProtectedPage({ children, permission }: Props) {
     )
   }
 
-  if (permission && !hasPermission(permission)) {
+  if (permission && !user.permissions.includes(permission)) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Redirecting...</p>
